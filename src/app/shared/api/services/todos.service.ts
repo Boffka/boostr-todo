@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {map} from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TodosService {
   //todo move this to a config file or app variables
   provider = 'https://jsonplaceholder.typicode.com/';
@@ -11,7 +10,10 @@ export class TodosService {
   constructor(private http: HttpClient) { }
 
   //todo describe the return type by creating a model
-  getTodos() {
-    return this.http.get(this.provider + this.endpoint);
+  getTodos(): any {
+    return this.http.get(`${this.provider}${this.endpoint}`)
+      .pipe(
+        map((items: any) => items.slice(0, 10))
+      );
   }
 }
